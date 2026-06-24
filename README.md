@@ -1,6 +1,6 @@
-# Doubao ChatGPT Dark Mode
+# Doubao Dark Mode
 
-一个适配 [豆包网页版聊天页](https://www.doubao.com/chat/) 的油猴 / Tampermonkey 深色模式脚本，配色尽量贴近 ChatGPT：深灰页面背景、黑色侧边栏、圆角输入框、柔和边框和绿色发送按钮。
+一个适配 [豆包网页版聊天页](https://www.doubao.com/chat/) 的油猴 / Tampermonkey 深色模式脚本：深灰页面背景、黑色侧边栏、圆角输入框、柔和边框和绿色发送按钮。
 
 ## 安装
 

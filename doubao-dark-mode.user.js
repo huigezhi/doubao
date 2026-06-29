@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         豆包黑暗模式
 // @namespace    http://tampermonkey.net/
-// @version      1.5
+// @version      1.6
 // @description  为豆包(doubao.com)强制启用黑暗模式
 // @author       You
 // @match        https://www.doubao.com/*
@@ -524,6 +524,37 @@
                 border-color: hsla(0,0%,100%,0.16) !important;
             }
 
+            /* 代码块外层容器（含语言标签栏、复制按钮等） */
+            .md-box-root [class*="code-block"],
+            .md-box-root [class*="codeBlock"],
+            .md-box-root [class*="code-container"],
+            .md-box-root [class*="codeContainer"],
+            .md-box-root [class*="code-wrapper"],
+            .md-box-root [class*="codeWrapper"],
+            .md-box-root pre[class*="language-"],
+            .md-box-root [class*="language-"] pre,
+            .md-box-root [class*="shiki"],
+            .md-box-root [class*="prism"] {
+                background-color: #121317 !important;
+                border-color: hsla(0,0%,100%,0.12) !important;
+            }
+
+            /* 代码块顶部工具栏/头部 */
+            .md-box-root [class*="code-header"],
+            .md-box-root [class*="codeHeader"],
+            .md-box-root [class*="code-head"],
+            .md-box-root [class*="codeHead"],
+            .md-box-root [class*="code-toolbar"],
+            .md-box-root [class*="codeToolbar"],
+            .md-box-root [class*="code-title"],
+            .md-box-root [class*="codeTitle"],
+            .md-box-root [class*="code-lang"],
+            .md-box-root [class*="codeLang"] {
+                background-color: #1a1d21 !important;
+                border-bottom-color: hsla(0,0%,100%,0.08) !important;
+                color: rgba(255,255,255,0.6) !important;
+            }
+
             /* === 代码块语法高亮暗色变量覆盖 === */
             /* 覆盖 .container-S2LAkl 的 --code-*_v3 亮色变量为暗色值 */
             .container-S2LAkl {
@@ -655,6 +686,65 @@
                 background-color: #121317 !important;
                 border-color: hsla(0,0%,100%,0.16) !important;
             }
+
+            /* flow-markdown-body 代码块外层容器 */
+            .flow-markdown-body [class*="code-block"],
+            .flow-markdown-body [class*="codeBlock"],
+            .flow-markdown-body [class*="code-container"],
+            .flow-markdown-body [class*="codeContainer"],
+            .flow-markdown-body [class*="code-wrapper"],
+            .flow-markdown-body [class*="codeWrapper"] {
+                background-color: #121317 !important;
+                border-color: hsla(0,0%,100%,0.12) !important;
+            }
+
+            /* flow-markdown-body 代码块顶部工具栏 */
+            .flow-markdown-body [class*="code-header"],
+            .flow-markdown-body [class*="codeHeader"],
+            .flow-markdown-body [class*="code-head"],
+            .flow-markdown-body [class*="codeHead"],
+            .flow-markdown-body [class*="code-toolbar"],
+            .flow-markdown-body [class*="codeToolbar"],
+            .flow-markdown-body [class*="code-title"],
+            .flow-markdown-body [class*="codeTitle"],
+            .flow-markdown-body [class*="code-lang"],
+            .flow-markdown-body [class*="codeLang"] {
+                background-color: #1a1d21 !important;
+                border-bottom-color: hsla(0,0%,100%,0.08) !important;
+                color: rgba(255,255,255,0.6) !important;
+            }
+
+            /* 通用代码块容器暗色覆盖（兜底方案） */
+            div[class*="code"] pre,
+            div[class*="Code"] pre,
+            div[class*="mdx-marker"] pre,
+            div[class*="mdx-marker"] code {
+                background-color: #121317 !important;
+            }
+
+            /* 针对豆包特有代码块组件 */
+            [class*="code-card"],
+            [class*="codeCard"] {
+                background-color: #121317 !important;
+                border-color: hsla(0,0%,100%,0.12) !important;
+            }
+
+            /* 代码块内按钮（复制、展开等） */
+            .md-box-root [class*="code"] button,
+            .md-box-root [class*="Code"] button,
+            .flow-markdown-body [class*="code"] button,
+            .flow-markdown-body [class*="Code"] button {
+                background-color: transparent !important;
+                color: rgba(255,255,255,0.6) !important;
+                border-color: hsla(0,0%,100%,0.12) !important;
+            }
+            .md-box-root [class*="code"] button:hover,
+            .md-box-root [class*="Code"] button:hover,
+            .flow-markdown-body [class*="code"] button:hover,
+            .flow-markdown-body [class*="Code"] button:hover {
+                background-color: hsla(0,0%,100%,0.08) !important;
+                color: #fff !important;
+            }
         `;
 
         // 添加样式到页面
@@ -730,7 +820,7 @@
             });
         }
 
-        console.log('[豆包黑暗模式] 已启用 v1.5 - 代码高亮修复');
+        console.log('[豆包黑暗模式] 已启用 v1.6 - 代码块容器暗色修复');
     }
 
     // 启动初始化

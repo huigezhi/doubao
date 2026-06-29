@@ -532,32 +532,38 @@
             }
 
             /* 代码块区域容器（真正设置亮色背景的层） */
-            .md-box-root [class*="code-area"] {
+            .md-box-root [class*="code-block-element"] [class*="code-area"],
+            .md-box-root [class*="custom-code-block-container"] [class*="code-area"] {
                 background-color: #121317 !important;
                 border-color: hsla(0,0%,100%,0.12) !important;
                 border-radius: 6px !important;
             }
 
             /* 代码块头部外层 */
-            .md-box-root [class*="header-wrapper"] {
+            .md-box-root [class*="code-block-element"] [class*="header-wrapper"],
+            .md-box-root [class*="custom-code-block-container"] [class*="header-wrapper"] {
                 background-color: #1a1d21 !important;
             }
 
             /* 代码块头部内层（真正设置亮色背景的层） */
-            .md-box-root [class*="header-"] {
+            .md-box-root [class*="code-block-element"] [class*="header-"],
+            .md-box-root [class*="custom-code-block-container"] [class*="header-"] {
                 background-color: #1a1d21 !important;
                 border-bottom-color: hsla(0,0%,100%,0.08) !important;
                 color: rgba(255,255,255,0.6) !important;
             }
 
             /* 代码块语言标签 */
-            .md-box-root [class*="title-"][class*="clickable"],
-            .md-box-root [class*="text-OkYU"] {
+            .md-box-root [class*="code-block-element"] [class*="title-"][class*="clickable"],
+            .md-box-root [class*="custom-code-block-container"] [class*="title-"][class*="clickable"],
+            .md-box-root [class*="code-block-element"] [class*="text-OkYU"],
+            .md-box-root [class*="custom-code-block-container"] [class*="text-OkYU"] {
                 color: rgba(255,255,255,0.6) !important;
             }
 
             /* 代码块内容区域（真正设置亮色背景的层） */
-            .md-box-root [class*="content-"][class*="code-content"] {
+            .md-box-root [class*="code-block-element"] [class*="content-"][class*="code-content"],
+            .md-box-root [class*="custom-code-block-container"] [class*="content-"][class*="code-content"] {
                 background-color: #121317 !important;
                 border-color: hsla(0,0%,100%,0.08) !important;
             }
@@ -725,21 +731,25 @@
             }
 
             /* flow-markdown-body 代码块区域容器 */
-            .flow-markdown-body [class*="code-area"] {
+            .flow-markdown-body [class*="code-block-element"] [class*="code-area"],
+            .flow-markdown-body [class*="custom-code-block-container"] [class*="code-area"] {
                 background-color: #121317 !important;
                 border-color: hsla(0,0%,100%,0.12) !important;
             }
 
             /* flow-markdown-body 代码块头部 */
-            .flow-markdown-body [class*="header-wrapper"],
-            .flow-markdown-body [class*="header-"] {
+            .flow-markdown-body [class*="code-block-element"] [class*="header-wrapper"],
+            .flow-markdown-body [class*="custom-code-block-container"] [class*="header-wrapper"],
+            .flow-markdown-body [class*="code-block-element"] [class*="header-"],
+            .flow-markdown-body [class*="custom-code-block-container"] [class*="header-"] {
                 background-color: #1a1d21 !important;
                 border-bottom-color: hsla(0,0%,100%,0.08) !important;
                 color: rgba(255,255,255,0.6) !important;
             }
 
             /* flow-markdown-body 代码块内容区域 */
-            .flow-markdown-body [class*="content-"][class*="code-content"] {
+            .flow-markdown-body [class*="code-block-element"] [class*="content-"][class*="code-content"],
+            .flow-markdown-body [class*="custom-code-block-container"] [class*="content-"][class*="code-content"] {
                 background-color: #121317 !important;
             }
 
@@ -759,18 +769,26 @@
             }
 
             /* 代码块内按钮（复制、展开、运行等）—— 豆包使用div而非button */
-            .md-box-root [class*="action-"] [class*="hoverable"],
-            .md-box-root [class*="code-area"] [class*="hoverable"],
-            .flow-markdown-body [class*="action-"] [class*="hoverable"],
-            .flow-markdown-body [class*="code-area"] [class*="hoverable"] {
+            .md-box-root [class*="code-block-element"] [class*="action-"] [class*="hoverable"],
+            .md-box-root [class*="custom-code-block-container"] [class*="action-"] [class*="hoverable"],
+            .md-box-root [class*="code-block-element"] [class*="code-area"] [class*="hoverable"],
+            .md-box-root [class*="custom-code-block-container"] [class*="code-area"] [class*="hoverable"],
+            .flow-markdown-body [class*="code-block-element"] [class*="action-"] [class*="hoverable"],
+            .flow-markdown-body [class*="custom-code-block-container"] [class*="action-"] [class*="hoverable"],
+            .flow-markdown-body [class*="code-block-element"] [class*="code-area"] [class*="hoverable"],
+            .flow-markdown-body [class*="custom-code-block-container"] [class*="code-area"] [class*="hoverable"] {
                 background-color: transparent !important;
                 color: rgba(255,255,255,0.6) !important;
                 border-color: hsla(0,0%,100%,0.12) !important;
             }
-            .md-box-root [class*="action-"] [class*="hoverable"]:hover,
-            .md-box-root [class*="code-area"] [class*="hoverable"]:hover,
-            .flow-markdown-body [class*="action-"] [class*="hoverable"]:hover,
-            .flow-markdown-body [class*="code-area"] [class*="hoverable"]:hover {
+            .md-box-root [class*="code-block-element"] [class*="action-"] [class*="hoverable"]:hover,
+            .md-box-root [class*="custom-code-block-container"] [class*="action-"] [class*="hoverable"]:hover,
+            .md-box-root [class*="code-block-element"] [class*="code-area"] [class*="hoverable"]:hover,
+            .md-box-root [class*="custom-code-block-container"] [class*="code-area"] [class*="hoverable"]:hover,
+            .flow-markdown-body [class*="code-block-element"] [class*="action-"] [class*="hoverable"]:hover,
+            .flow-markdown-body [class*="custom-code-block-container"] [class*="action-"] [class*="hoverable"]:hover,
+            .flow-markdown-body [class*="code-block-element"] [class*="code-area"] [class*="hoverable"]:hover,
+            .flow-markdown-body [class*="custom-code-block-container"] [class*="code-area"] [class*="hoverable"]:hover {
                 background-color: hsla(0,0%,100%,0.08) !important;
                 color: #fff !important;
             }

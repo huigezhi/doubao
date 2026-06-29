@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         豆包黑暗模式
 // @namespace    http://tampermonkey.net/
-// @version      1.6
+// @version      1.8
 // @description  为豆包(doubao.com)强制启用黑暗模式
 // @author       You
 // @match        https://www.doubao.com/*
@@ -61,6 +61,69 @@
     function fixAllMdBoxElements() {
         const mdBoxes = document.querySelectorAll('.md-box-root');
         mdBoxes.forEach(fixMdBoxInlineStyle);
+    }
+
+    // 用JS直接修改代码块样式，不依赖CSS优先级
+    function fixCodeBlocks() {
+        // 找到所有代码块外层容器
+        const codeBlocks = document.querySelectorAll('[class*="code-block-element"], [class*="custom-code-block-container"]');
+        
+        codeBlocks.forEach(block => {
+            // 外层容器背景
+            block.style.backgroundColor = '#121317';
+            block.style.borderColor = 'rgba(255,255,255,0.12)';
+
+            // 代码区域（真正有亮色背景的层）
+            const codeArea = block.querySelector('[class*="code-area"]');
+            if (codeArea) {
+                codeArea.style.backgroundColor = '#121317';
+                codeArea.style.borderColor = 'rgba(255,255,255,0.12)';
+            }
+
+            // 头部外层
+            const headerWrapper = block.querySelector('[class*="header-wrapper"]');
+            if (headerWrapper) {
+                headerWrapper.style.backgroundColor = '#1a1d21';
+            }
+
+            // 头部内层（真正有亮色背景的层）
+            block.querySelectorAll('[class*="header-"]').forEach(el => {
+                el.style.backgroundColor = '#1a1d21';
+                el.style.borderBottomColor = 'rgba(255,255,255,0.08)';
+                el.style.color = 'rgba(255,255,255,0.6)';
+            });
+
+            // 语言标签
+            block.querySelectorAll('[class*="title-"]').forEach(el => {
+                el.style.color = 'rgba(255,255,255,0.6)';
+            });
+
+            // 代码内容区域（真正有亮色背景的层）
+            block.querySelectorAll('[class*="content-"]').forEach(el => {
+                if (el.className.includes('code-content') || el.className.includes('codeContent')) {
+                    el.style.backgroundColor = '#121317';
+                    el.style.borderColor = 'rgba(255,255,255,0.08)';
+                }
+            });
+
+            // 按钮（复制、运行等，豆包用div而非button）
+            block.querySelectorAll('[class*="hoverable"]').forEach(el => {
+                el.style.backgroundColor = 'transparent';
+                el.style.color = 'rgba(255,255,255,0.6)';
+                el.style.borderColor = 'rgba(255,255,255,0.12)';
+            });
+
+            // 修复token颜色（硬编码黑色的token）
+            block.querySelectorAll('.token.comment, .token.prolog, .token.doctype, .token.cdata').forEach(el => {
+                el.style.color = 'rgba(255,255,255,0.5)';
+            });
+            block.querySelectorAll('.token.operator, .token.punctuation').forEach(el => {
+                el.style.color = 'rgba(255,255,255,0.7)';
+            });
+            block.querySelectorAll('.token.variable, .token.constant, .token.symbol').forEach(el => {
+                el.style.color = '#fff';
+            });
+        });
     }
 
     // 等待 documentElement 可用后再执行
@@ -524,35 +587,48 @@
                 border-color: hsla(0,0%,100%,0.16) !important;
             }
 
-            /* 代码块外层容器（含语言标签栏、复制按钮等） */
-            .md-box-root [class*="code-block"],
-            .md-box-root [class*="codeBlock"],
-            .md-box-root [class*="code-container"],
-            .md-box-root [class*="codeContainer"],
-            .md-box-root [class*="code-wrapper"],
-            .md-box-root [class*="codeWrapper"],
-            .md-box-root pre[class*="language-"],
-            .md-box-root [class*="language-"] pre,
-            .md-box-root [class*="shiki"],
-            .md-box-root [class*="prism"] {
+            /* 代码块外层容器 */
+            .md-box-root [class*="code-block-element"],
+            .md-box-root [class*="custom-code-block-container"] {
                 background-color: #121317 !important;
                 border-color: hsla(0,0%,100%,0.12) !important;
             }
 
-            /* 代码块顶部工具栏/头部 */
-            .md-box-root [class*="code-header"],
-            .md-box-root [class*="codeHeader"],
-            .md-box-root [class*="code-head"],
-            .md-box-root [class*="codeHead"],
-            .md-box-root [class*="code-toolbar"],
-            .md-box-root [class*="codeToolbar"],
-            .md-box-root [class*="code-title"],
-            .md-box-root [class*="codeTitle"],
-            .md-box-root [class*="code-lang"],
-            .md-box-root [class*="codeLang"] {
+            /* 代码块区域容器（真正设置亮色背景的层） */
+            .md-box-root [class*="code-block-element"] [class*="code-area"],
+            .md-box-root [class*="custom-code-block-container"] [class*="code-area"] {
+                background-color: #121317 !important;
+                border-color: hsla(0,0%,100%,0.12) !important;
+                border-radius: 6px !important;
+            }
+
+            /* 代码块头部外层 */
+            .md-box-root [class*="code-block-element"] [class*="header-wrapper"],
+            .md-box-root [class*="custom-code-block-container"] [class*="header-wrapper"] {
+                background-color: #1a1d21 !important;
+            }
+
+            /* 代码块头部内层（真正设置亮色背景的层） */
+            .md-box-root [class*="code-block-element"] [class*="header-"],
+            .md-box-root [class*="custom-code-block-container"] [class*="header-"] {
                 background-color: #1a1d21 !important;
                 border-bottom-color: hsla(0,0%,100%,0.08) !important;
                 color: rgba(255,255,255,0.6) !important;
+            }
+
+            /* 代码块语言标签 */
+            .md-box-root [class*="code-block-element"] [class*="title-"][class*="clickable"],
+            .md-box-root [class*="custom-code-block-container"] [class*="title-"][class*="clickable"],
+            .md-box-root [class*="code-block-element"] [class*="text-OkYU"],
+            .md-box-root [class*="custom-code-block-container"] [class*="text-OkYU"] {
+                color: rgba(255,255,255,0.6) !important;
+            }
+
+            /* 代码块内容区域（真正设置亮色背景的层） */
+            .md-box-root [class*="code-block-element"] [class*="content-"][class*="code-content"],
+            .md-box-root [class*="custom-code-block-container"] [class*="content-"][class*="code-content"] {
+                background-color: #121317 !important;
+                border-color: hsla(0,0%,100%,0.08) !important;
             }
 
             /* === 代码块语法高亮暗色变量覆盖 === */
@@ -618,6 +694,29 @@
             }
             .container-S2LAkl code[class*="language-"] .token.atrule {
                 color: #a5d6ff !important;
+            }
+            /* 修复暗色模式下看不清的token（使用硬编码黑色值的token） */
+            .container-S2LAkl code[class*="language-"] .token.comment,
+            .container-S2LAkl code[class*="language-"] .token.prolog,
+            .container-S2LAkl code[class*="language-"] .token.doctype,
+            .container-S2LAkl code[class*="language-"] .token.cdata {
+                color: rgba(255,255,255,0.5) !important;
+            }
+            .container-S2LAkl code[class*="language-"] .token.operator,
+            .container-S2LAkl code[class*="language-"] .token.punctuation,
+            .container-S2LAkl code[class*="language-"] .token.entity,
+            .container-S2LAkl code[class*="language-"] .token.url {
+                color: rgba(255,255,255,0.7) !important;
+            }
+            .container-S2LAkl code[class*="language-"] .token.tag,
+            .container-S2LAkl code[class*="language-"] .token.class-name {
+                color: #569cd6 !important;
+            }
+            .container-S2LAkl code[class*="language-"] .token.variable,
+            .container-S2LAkl code[class*="language-"] .token.constant,
+            .container-S2LAkl code[class*="language-"] .token.symbol,
+            .container-S2LAkl code[class*="language-"] .token.deleted {
+                color: #fff !important;
             }
 
             .md-box-root blockquote {
@@ -688,30 +787,33 @@
             }
 
             /* flow-markdown-body 代码块外层容器 */
-            .flow-markdown-body [class*="code-block"],
-            .flow-markdown-body [class*="codeBlock"],
-            .flow-markdown-body [class*="code-container"],
-            .flow-markdown-body [class*="codeContainer"],
-            .flow-markdown-body [class*="code-wrapper"],
-            .flow-markdown-body [class*="codeWrapper"] {
+            .flow-markdown-body [class*="code-block-element"],
+            .flow-markdown-body [class*="custom-code-block-container"] {
                 background-color: #121317 !important;
                 border-color: hsla(0,0%,100%,0.12) !important;
             }
 
-            /* flow-markdown-body 代码块顶部工具栏 */
-            .flow-markdown-body [class*="code-header"],
-            .flow-markdown-body [class*="codeHeader"],
-            .flow-markdown-body [class*="code-head"],
-            .flow-markdown-body [class*="codeHead"],
-            .flow-markdown-body [class*="code-toolbar"],
-            .flow-markdown-body [class*="codeToolbar"],
-            .flow-markdown-body [class*="code-title"],
-            .flow-markdown-body [class*="codeTitle"],
-            .flow-markdown-body [class*="code-lang"],
-            .flow-markdown-body [class*="codeLang"] {
+            /* flow-markdown-body 代码块区域容器 */
+            .flow-markdown-body [class*="code-block-element"] [class*="code-area"],
+            .flow-markdown-body [class*="custom-code-block-container"] [class*="code-area"] {
+                background-color: #121317 !important;
+                border-color: hsla(0,0%,100%,0.12) !important;
+            }
+
+            /* flow-markdown-body 代码块头部 */
+            .flow-markdown-body [class*="code-block-element"] [class*="header-wrapper"],
+            .flow-markdown-body [class*="custom-code-block-container"] [class*="header-wrapper"],
+            .flow-markdown-body [class*="code-block-element"] [class*="header-"],
+            .flow-markdown-body [class*="custom-code-block-container"] [class*="header-"] {
                 background-color: #1a1d21 !important;
                 border-bottom-color: hsla(0,0%,100%,0.08) !important;
                 color: rgba(255,255,255,0.6) !important;
+            }
+
+            /* flow-markdown-body 代码块内容区域 */
+            .flow-markdown-body [class*="code-block-element"] [class*="content-"][class*="code-content"],
+            .flow-markdown-body [class*="custom-code-block-container"] [class*="content-"][class*="code-content"] {
+                background-color: #121317 !important;
             }
 
             /* 通用代码块容器暗色覆盖（兜底方案） */
@@ -729,19 +831,27 @@
                 border-color: hsla(0,0%,100%,0.12) !important;
             }
 
-            /* 代码块内按钮（复制、展开等） */
-            .md-box-root [class*="code"] button,
-            .md-box-root [class*="Code"] button,
-            .flow-markdown-body [class*="code"] button,
-            .flow-markdown-body [class*="Code"] button {
+            /* 代码块内按钮（复制、展开、运行等）—— 豆包使用div而非button */
+            .md-box-root [class*="code-block-element"] [class*="action-"] [class*="hoverable"],
+            .md-box-root [class*="custom-code-block-container"] [class*="action-"] [class*="hoverable"],
+            .md-box-root [class*="code-block-element"] [class*="code-area"] [class*="hoverable"],
+            .md-box-root [class*="custom-code-block-container"] [class*="code-area"] [class*="hoverable"],
+            .flow-markdown-body [class*="code-block-element"] [class*="action-"] [class*="hoverable"],
+            .flow-markdown-body [class*="custom-code-block-container"] [class*="action-"] [class*="hoverable"],
+            .flow-markdown-body [class*="code-block-element"] [class*="code-area"] [class*="hoverable"],
+            .flow-markdown-body [class*="custom-code-block-container"] [class*="code-area"] [class*="hoverable"] {
                 background-color: transparent !important;
                 color: rgba(255,255,255,0.6) !important;
                 border-color: hsla(0,0%,100%,0.12) !important;
             }
-            .md-box-root [class*="code"] button:hover,
-            .md-box-root [class*="Code"] button:hover,
-            .flow-markdown-body [class*="code"] button:hover,
-            .flow-markdown-body [class*="Code"] button:hover {
+            .md-box-root [class*="code-block-element"] [class*="action-"] [class*="hoverable"]:hover,
+            .md-box-root [class*="custom-code-block-container"] [class*="action-"] [class*="hoverable"]:hover,
+            .md-box-root [class*="code-block-element"] [class*="code-area"] [class*="hoverable"]:hover,
+            .md-box-root [class*="custom-code-block-container"] [class*="code-area"] [class*="hoverable"]:hover,
+            .flow-markdown-body [class*="code-block-element"] [class*="action-"] [class*="hoverable"]:hover,
+            .flow-markdown-body [class*="custom-code-block-container"] [class*="action-"] [class*="hoverable"]:hover,
+            .flow-markdown-body [class*="code-block-element"] [class*="code-area"] [class*="hoverable"]:hover,
+            .flow-markdown-body [class*="custom-code-block-container"] [class*="code-area"] [class*="hoverable"]:hover {
                 background-color: hsla(0,0%,100%,0.08) !important;
                 color: #fff !important;
             }
@@ -788,7 +898,7 @@
             attributeFilter: ['data-theme', 'data-theme-mode', 'theme-mode']
         });
 
-        // 监听 DOM 变化，修复新出现的 md-box-root 元素的内联style
+        // 监听 DOM 变化，修复新出现的 md-box-root 元素和代码块
         const mdBoxObserver = new MutationObserver((mutations) => {
             let needFix = false;
             for (const mutation of mutations) {
@@ -799,11 +909,13 @@
             }
             if (needFix) {
                 fixAllMdBoxElements();
+                fixCodeBlocks();
             }
         });
 
         // 初始修复 + 启动观察
         fixAllMdBoxElements();
+        fixCodeBlocks();
 
         if (document.body) {
             mdBoxObserver.observe(document.body, {
@@ -817,10 +929,14 @@
                     subtree: true
                 });
                 fixAllMdBoxElements();
+                fixCodeBlocks();
             });
         }
 
-        console.log('[豆包黑暗模式] 已启用 v1.6 - 代码块容器暗色修复');
+        // 定期修复代码块（应对动态渲染和样式重置）
+        setInterval(fixCodeBlocks, 2000);
+
+        console.log('[豆包黑暗模式] 已启用 v1.8 - JS动态修复代码块样式');
     }
 
     // 启动初始化

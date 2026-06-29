@@ -626,6 +626,29 @@
             .container-S2LAkl code[class*="language-"] .token.atrule {
                 color: #a5d6ff !important;
             }
+            /* 修复暗色模式下看不清的token（使用硬编码黑色值的token） */
+            .container-S2LAkl code[class*="language-"] .token.comment,
+            .container-S2LAkl code[class*="language-"] .token.prolog,
+            .container-S2LAkl code[class*="language-"] .token.doctype,
+            .container-S2LAkl code[class*="language-"] .token.cdata {
+                color: rgba(255,255,255,0.5) !important;
+            }
+            .container-S2LAkl code[class*="language-"] .token.operator,
+            .container-S2LAkl code[class*="language-"] .token.punctuation,
+            .container-S2LAkl code[class*="language-"] .token.entity,
+            .container-S2LAkl code[class*="language-"] .token.url {
+                color: rgba(255,255,255,0.7) !important;
+            }
+            .container-S2LAkl code[class*="language-"] .token.tag,
+            .container-S2LAkl code[class*="language-"] .token.class-name {
+                color: #569cd6 !important;
+            }
+            .container-S2LAkl code[class*="language-"] .token.variable,
+            .container-S2LAkl code[class*="language-"] .token.constant,
+            .container-S2LAkl code[class*="language-"] .token.symbol,
+            .container-S2LAkl code[class*="language-"] .token.deleted {
+                color: #fff !important;
+            }
 
             .md-box-root blockquote {
                 border-left-color: hsla(0,0%,100%,0.24) !important;
